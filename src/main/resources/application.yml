@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:socialmedia
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+    initialization-mode: always
+
+  jpa:
+    jpa:
+      hibernate:
+        ddl-auto: create-drop
+    show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  security:
+    user:
+      name: admin
+      password: admin123
+
+  main:
+    web-application-type: servlet
+
+jwt:
+  secret: "wTZb5x8z/A?D(G+KbPeShVmYq3s6v9y$B&E)H@McQfTjWnZr4u7w!z%C*F-JaNdR"
+  expiration: 86400000
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+    com.javagirls: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
