@@ -1,5 +1,6 @@
 package com.javagirls.social_media_ed.amizade;
 
+import com.javagirls.social_media_ed.commons.UsuarioLogadoComponent;
 import com.javagirls.social_media_ed.grafo.ListaAdjacenteGrafo;
 import com.javagirls.social_media_ed.usuario.Usuario;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,12 @@ public class SolicitacaoAmizadeController {
 
     private final FilaSolicitacaoAmizade fila;
     private final ListaAdjacenteGrafo grafo;
+    private final UsuarioLogadoComponent usuarioLogadoComponent;
 
-    public SolicitacaoAmizadeController(FilaSolicitacaoAmizade fila, ListaAdjacenteGrafo grafo) {
+    public SolicitacaoAmizadeController(FilaSolicitacaoAmizade fila, ListaAdjacenteGrafo grafo, UsuarioLogadoComponent usuarioLogadoComponent) {
         this.fila = fila;
         this.grafo = grafo;
+        this.usuarioLogadoComponent = usuarioLogadoComponent;
     }
 
     @PostMapping
@@ -37,16 +40,7 @@ public class SolicitacaoAmizadeController {
 
     @GetMapping("/amigos")
     public ResponseEntity<?> minhasConexoes() {
-        // Obter o usuário logado do SecurityContextHolder
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal == null || principal.equals("anonymousUser")) {
-            return ResponseEntity.status(401).body("Usuário não autenticado");
-        }
-
-        // O filtro JwtAuthenticationFilter coloca o objeto Usuario como principal
-        Usuario usuarioLogado = (Usuario) principal;
-        Integer usuarioId = usuarioLogado.getId();
+        Integer usuarioId = usuarioLogadoComponent.getUsuarioLogado().getId();
         List<Usuario> conexoes = grafo.getConexoesUsuario(usuarioId);
         return ResponseEntity.ok(conexoes);
     }

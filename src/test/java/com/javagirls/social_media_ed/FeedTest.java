@@ -13,8 +13,5 @@ class FeedTest {
 
     @BeforeEach
     void setUp() {
-        feed = new Feed();
-        author = mock(Usuario.class);
-        when(author.getNomeUsuario()).thenReturn("Test User");
     }
 }

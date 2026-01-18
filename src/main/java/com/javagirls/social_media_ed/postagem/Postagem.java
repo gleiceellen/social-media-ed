@@ -1,5 +1,6 @@
 package com.javagirls.social_media_ed.postagem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javagirls.social_media_ed.usuario.Usuario;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -15,9 +16,6 @@ public class Postagem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private Integer idAnterior;
-    private Integer idProximo;
 
     @Column(nullable = false, length = 1000)
     private String mensagem;
@@ -41,20 +39,32 @@ public class Postagem {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime dataCriacao;
 
-    public Postagem() {
-        this.dataCriacao = LocalDateTime.now();
+    @JsonIgnore
+    @Transient
+    private Postagem anterior;
+
+    @JsonIgnore
+    @Transient
+    private Postagem proximo;
+
+    public Postagem getAnterior() {
+        return anterior;
     }
 
-    public Postagem(Integer id, Integer idAnterior, Integer idProximo, String mensagem, byte[] imagem, Usuario autor, Integer curtidas, List<String> comentarios, LocalDateTime dataCriacao) {
-        this.id = id;
-        this.idAnterior = idAnterior;
-        this.idProximo = idProximo;
-        this.mensagem = mensagem;
-        this.imagem = imagem;
-        this.autor = autor;
-        this.curtidas = curtidas;
-        this.comentarios = comentarios;
-        this.dataCriacao = dataCriacao;
+    public void setAnterior(Postagem anterior) {
+        this.anterior = anterior;
+    }
+
+    public Postagem getProximo() {
+        return proximo;
+    }
+
+    public void setProximo(Postagem proximo) {
+        this.proximo = proximo;
+    }
+
+    public Postagem() {
+        this.dataCriacao = LocalDateTime.now();
     }
 
     public Postagem(String mensagem, Usuario autor) {
@@ -68,22 +78,6 @@ public class Postagem {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getIdAnterior() {
-        return idAnterior;
-    }
-
-    public void setIdAnterior(Integer idAnterior) {
-        this.idAnterior = idAnterior;
-    }
-
-    public Integer getIdProximo() {
-        return idProximo;
-    }
-
-    public void setIdProximo(Integer idProximo) {
-        this.idProximo = idProximo;
     }
 
     public String getMensagem() {
