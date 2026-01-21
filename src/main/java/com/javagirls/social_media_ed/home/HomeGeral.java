@@ -1,7 +1,7 @@
 package com.javagirls.social_media_ed.home;
 
 import com.javagirls.social_media_ed.feed.Feed;
-import com.javagirls.social_media_ed.usuario.Usuario;
+import com.javagirls.social_media_ed.feed.FeedDTO;
 import com.javagirls.social_media_ed.usuario.UsuarioDTO;
 
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.List;
 public class HomeGeral {
     String mensagem;
     List<UsuarioDTO> usuarios;
-    Feed feed;
+    FeedDTO feed;
 
     public HomeGeral(String mensagem, List<UsuarioDTO> usuarios, Feed feed) {
         this.mensagem = mensagem;
         this.usuarios = usuarios;
-        this.feed = feed;
+        this.feed = feed.toDTO(); // Converter para DTO
     }
 
     public String getMensagem() {
@@ -33,11 +33,11 @@ public class HomeGeral {
         this.usuarios = usuarios;
     }
 
-    public Feed getFeed() {
+    public FeedDTO getFeed() {
         return feed;
     }
 
-    public void setFeed(Feed feed) {
+    public void setFeed(FeedDTO feed) {
         this.feed = feed;
     }
 }

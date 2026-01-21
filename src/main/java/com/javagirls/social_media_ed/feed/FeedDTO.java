@@ -1,22 +1,34 @@
 package com.javagirls.social_media_ed.feed;
 
-import com.javagirls.social_media_ed.postagem.Postagem;
+import com.javagirls.social_media_ed.postagem.PostagemNoDTO;
+
 import java.util.List;
 
 public class FeedDTO {
-    private List<Postagem> postagens;
+    private String mensagem;
+    private List<PostagemNoDTO> postagens;
     private int tamanho;
 
-    public FeedDTO(List<Postagem> postagens, int tamanho) {
+    public FeedDTO(List<PostagemNoDTO> postagens, int tamanho) {
+        this.mensagem = "Bem-vindo ao Feed!";
         this.postagens = postagens;
         this.tamanho = tamanho;
     }
 
-    public List<Postagem> getPostagens() {
+    // Getters e Setters
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    public List<PostagemNoDTO> getPostagens() {
         return postagens;
     }
 
-    public void setPostagens(List<Postagem> postagens) {
+    public void setPostagens(List<PostagemNoDTO> postagens) {
         this.postagens = postagens;
     }
 

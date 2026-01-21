@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javagirls.social_media_ed.usuario.Usuario;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "posts")
@@ -28,8 +25,17 @@ public class Postagem {
     @JoinColumn(name = "author_id", nullable = false)
     private Usuario autor;
 
+    // Mapeamento ManyToMany para curtidas
+    @ManyToMany
+    @JoinTable(
+            name = "post_curtidas",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id")
+    )
+    private Set<Usuario> curtidas = new HashSet<>();
+
     @Column(name = "like_count")
-    private Integer curtidas = 0;
+    private Integer contadorCurtidas = 0;
 
     @ElementCollection
     @CollectionTable(name = "post_comments", joinColumns = @JoinColumn(name = "post_id"))
@@ -47,31 +53,37 @@ public class Postagem {
     @Transient
     private Postagem proximo;
 
-    public Postagem getAnterior() {
-        return anterior;
-    }
-
-    public void setAnterior(Postagem anterior) {
-        this.anterior = anterior;
-    }
-
-    public Postagem getProximo() {
-        return proximo;
-    }
-
-    public void setProximo(Postagem proximo) {
-        this.proximo = proximo;
-    }
-
     public Postagem() {
         this.dataCriacao = LocalDateTime.now();
+        this.curtidas = new HashSet<>();
+        this.contadorCurtidas = 0;
     }
 
     public Postagem(String mensagem, Usuario autor) {
+        this();
         this.mensagem = mensagem;
         this.autor = autor;
     }
 
+    // Método para adicionar curtida
+    public boolean adicionarCurtida(Usuario usuario) {
+        if (curtidas.add(usuario)) {
+            contadorCurtidas = curtidas.size();
+            return true;
+        }
+        return false;
+    }
+
+    // Método para remover curtida
+    public boolean removerCurtida(Usuario usuario) {
+        if (curtidas.remove(usuario)) {
+            contadorCurtidas = curtidas.size();
+            return true;
+        }
+        return false;
+    }
+
+    // Getters e Setters
     public Integer getId() {
         return id;
     }
@@ -107,12 +119,17 @@ public class Postagem {
         this.autor = Objects.requireNonNull(autor, "Autor não pode ser nulo");
     }
 
-    public Integer getCurtidas() {
-        return curtidas;
+    public Set<Usuario> getCurtidas() {
+        return Collections.unmodifiableSet(curtidas);
     }
 
-    public void setCurtidas(Integer curtidas) {
-        this.curtidas = curtidas != null && curtidas >= 0 ? curtidas : 0;
+    public void setCurtidas(Set<Usuario> curtidas) {
+        this.curtidas = curtidas != null ? new HashSet<>(curtidas) : new HashSet<>();
+        this.contadorCurtidas = this.curtidas.size();
+    }
+
+    public Integer getContadorCurtidas() {
+        return contadorCurtidas;
     }
 
     public List<String> getComentarios() {
@@ -131,14 +148,30 @@ public class Postagem {
         this.dataCriacao = dataCriacao;
     }
 
-    // Método toString() para debug
+    public Postagem getAnterior() {
+        return anterior;
+    }
+
+    public void setAnterior(Postagem anterior) {
+        this.anterior = anterior;
+    }
+
+    public Postagem getProximo() {
+        return proximo;
+    }
+
+    public void setProximo(Postagem proximo) {
+        this.proximo = proximo;
+    }
+
     @Override
     public String toString() {
         return "Postagem{" +
                 "id=" + id +
                 ", mensagem='" + (mensagem != null ? mensagem.substring(0, Math.min(50, mensagem.length())) : "") + "..." +
                 ", autor=" + (autor != null ? autor.getId() : null) +
-                ", curtidas=" + curtidas +
+                ", curtidas=" + curtidas.size() +
+                ", contadorCurtidas=" + contadorCurtidas +
                 ", comentarios=" + comentarios.size() +
                 ", dataCriacao=" + dataCriacao +
                 '}';
