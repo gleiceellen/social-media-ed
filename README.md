@@ -98,27 +98,17 @@ Usuário: sa
 Senha: (deixe em branco)
 
 🔐 Endpoints da API
-Autenticação
-Método	Endpoint	Descrição	Auth
-POST	/auth/registrar-lote	Registrar múltiplos usuários	❌
-POST	/auth/login	Autenticar e obter token JWT	❌
-Usuários
-Método	Endpoint	Descrição	Auth
-GET	/home	Feed geral da rede	✅
-GET	/usuarios	Listar todos usuários	✅
-Amizades
-Método	Endpoint	Descrição	Auth
-GET	/solicitacoes-amizade	Ver solicitações pendentes	✅
-POST	/solicitacoes-amizade	Enviar solicitação	✅
-POST	/solicitacoes-amizade/aceitar	Aceitar solicitação	✅
-DELETE	/solicitacoes-amizade/{id}	Rejeitar/Cancelar solicitação	✅
-GET	/solicitacoes-amizade/amigos	Listar amigos	✅
-Publicações
-Método	Endpoint	Descrição	Auth
-GET	/posts	Ver publicações	✅
-POST	/posts	Criar publicação	✅
-PUT	/posts/{id}	Editar publicação	✅
-DELETE	/posts/{id}	Excluir publicação	✅
+
+POST http://localhost:8080/auth/registrar-lote  
+POST http://localhost:8080/auth/login  
+GET http://localhost:8080/home  
+POST http://localhost:8080/feed/postagem  
+POST http://localhost:8080/feed/postagem/curtidas  
+POST http://localhost:8080/solicitacoes-amizade  
+GET http://localhost:8080/solicitacoes-amizade  
+POST http://localhost:8080/solicitacoes-amizade/aceitar  
+GET http://localhost:8080/solicitacoes-amizade/amigos
+
 📦 Dependências Gradle
 kotlin
 dependencies {
