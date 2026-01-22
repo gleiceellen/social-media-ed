@@ -25,3 +25,11 @@ replay_pid*
 
 .idea
 .src
+.DS_Store
+.gradle/
+HELP.md
+build/
+compose.yaml
+gradle/
+gradlew
+gradlew.bat
